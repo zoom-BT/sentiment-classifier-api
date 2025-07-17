@@ -12,21 +12,24 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+import os
+from pathlib import Path
+
+# Définition du chemin de base du projet
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Clé secrète de Django (importée depuis la variable d'environnement DJANGO_SECRET_KEY)
+# Si non définie, utilise une clé par défaut (uniquement pour le développement local)
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-default-key-pour-dev')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+# Mode debug (importé depuis DJANGO_DEBUG)
+# Par défaut True en local, à passer à False en production
+DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zsf(s+zu=5+(7$1i!%g)^yryjz)gxm!uz8l-mhb_y-i1q1g!y&'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+# Liste des hôtes autorisés (importée depuis DJANGO_ALLOWED_HOSTS)
+# Par défaut 'localhost' et '127.0.0.1' en local
+allowed_hosts_env = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1')
+ALLOWED_HOSTS = allowed_hosts_env.split(',')
 
 # Application definition
 
